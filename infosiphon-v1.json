@@ -1,0 +1,1005 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is Infosiphon REST server.  You can find out more about  Infosiphon at [https://www.infosiphon.com](https://www.infosiphon.com).",
+    "version": "1.0.0",
+    "title": "Infosiphon REST API",
+    "termsOfService": "https://www.infosiphon.com/infosiphon/termofservice",
+    "contact": {
+      "email": "siphon@infosiphon.com"
+    }
+  },
+  "host": "infosiphon.com",
+  "basePath": "/rest/v1",
+  "tags": [
+    {
+      "name": "Aggregator",
+      "description": "Everything about Aggregators"
+    },
+    {
+      "name": "Visualization",
+      "description": "Access to visualization data"
+    },
+    {
+      "name": "User",
+      "description": "Operations about user"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/aggregator": {
+      "post": {
+        "tags": [
+          "Aggregator"
+        ],
+        "summary": "Add a new aggregator",
+        "operationId": "addAggregator",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Aggregator object that needs to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Aggregator"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/Aggregator"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "405": {
+            "description": "Validation exception"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "infosiphon_auth": [
+              "write:aggregator",
+              "read:aggregator"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Aggregator"
+        ],
+        "summary": "Update the existing aggregator",
+        "operationId": "updateAggregator",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Aggregator object that needs to be modified",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Aggregator"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Aggregator not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "infosiphon_auth": [
+              "write:aggregator",
+              "read:aggregator"
+            ]
+          }
+        ]
+      }
+    },
+    "/aggregator/{aggregatorId}": {
+      "get": {
+        "tags": [
+          "Aggregator"
+        ],
+        "summary": "Find aggregator by ID",
+        "description": "Returns a single aggregator",
+        "operationId": "getAggregatorById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "aggregatorId",
+            "in": "path",
+            "description": "ID of aggregator to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Aggregator"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Aggregator not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Aggregator"
+        ],
+        "summary": "Deletes an aggregator",
+        "description": "",
+        "operationId": "deleteAggregator",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "aggregatorId",
+            "in": "path",
+            "description": "Aggregator id to delete",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Aggregator not found"
+          }
+        },
+        "security": [
+          {
+            "infosiphon_auth": [
+              "write:aggregator",
+              "read:aggregator"
+            ]
+          }
+        ]
+      }
+    },
+    "/aggregator/type": {
+      "put": {
+        "tags": [
+          "Aggregator"
+        ],
+        "summary": "enalbe or disable different aggregator types",
+        "description": "",
+        "operationId": "updateDocumentAggregator",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Aggregator id to update aggregator type",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AggregatorType"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Aggregator not found"
+          }
+        },
+        "security": [
+          {
+            "infosiphon_auth": [
+              "write:aggregator",
+              "read:aggregator"
+            ]
+          }
+        ]
+      }
+    },
+    "/aggregator/{aggregatorId}/type": {
+      "get": {
+        "tags": [
+          "Aggregator"
+        ],
+        "summary": "Get aggregator type by the aggregator ID",
+        "operationId": "getAggregatorTypeById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "aggregatorId",
+            "in": "path",
+            "description": "ID of the aggregator to return its type",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/AggregatorType"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Aggregator not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/aggregator/{aggregatorId}/history": {
+      "get": {
+        "tags": [
+          "Aggregator"
+        ],
+        "summary": "Find aggregator history by aggregator ID",
+        "description": "Returns a collection of history items",
+        "operationId": "getAggregatorHistoryById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "aggregatorId",
+            "in": "path",
+            "description": "ID of aggregator to return history",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AggregatorHistory"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Aggregator not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Aggregator"
+        ],
+        "summary": "Deletes history of an aggregator",
+        "description": "",
+        "operationId": "deleteAggregatorHistory",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "aggregatorId",
+            "in": "path",
+            "description": "Aggregator id to delete the history",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Aggregator not found"
+          }
+        },
+        "security": [
+          {
+            "infosiphon_auth": [
+              "write:aggregator",
+              "read:aggregator"
+            ]
+          }
+        ]
+      }
+    },
+    "/aggregator/{aggregatorId}/search_results": {
+      "get": {
+        "tags": [
+          "Aggregator"
+        ],
+        "summary": "Find aggregator search results by aggregator ID",
+        "description": "Returns search results of aggregator",
+        "operationId": "getAggregatorSearchResultsById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "aggregatorId",
+            "in": "path",
+            "description": "ID of aggregator to return search results",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AggregatorSearchResult"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Aggregator not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/aggregator/search_result/{searchResultId}": {
+      "delete": {
+        "tags": [
+          "Aggregator"
+        ],
+        "summary": "Deletes search result of an aggregator",
+        "description": "",
+        "operationId": "deleteSearchResult",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "searchResultId",
+            "in": "path",
+            "description": "Search result id to delete",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Aggregator not found"
+          }
+        },
+        "security": [
+          {
+            "infosiphon_auth": [
+              "write:aggregator",
+              "read:aggregator"
+            ]
+          }
+        ]
+      }
+    },
+    "/user": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "createUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user/createWithArray": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Creates list of users with given input array",
+        "description": "",
+        "operationId": "createUsersWithArrayInput",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "List of user object",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "loginUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The user name for login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for login in clear text",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            },
+            "headers": {
+              "X-Rate-Limit": {
+                "type": "integer",
+                "format": "int32",
+                "description": "calls per hour allowed by the user"
+              },
+              "X-Expires-After": {
+                "type": "string",
+                "format": "date-time",
+                "description": "date in UTC when token expires"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Logs out current logged in user session",
+        "description": "",
+        "operationId": "logoutUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user/{username}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user by user name",
+        "description": "",
+        "operationId": "getUserByName",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name that needs to be fetched. Use user1 for testing. ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Updated user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid user supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Delete user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deleteUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "infosiphon_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://infosiphon.com/rest/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:aggregator": "modify aggregator in your account",
+        "read:aggregator": "read your aggregator"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "userStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "User Status"
+        }
+      }
+    },
+    "Aggregator": {
+      "type": "object",
+      "required": [
+        "name",
+        "organizationId"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        },
+        "organizationId": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "cryptocurrency"
+        },
+        "state": {
+          "type": "string",
+          "description": "execution status of the aggregator",
+          "enum": [
+            "scheduled",
+            "disabled",
+            "pending_search",
+            "searching",
+            "processed",
+            "awaiting",
+            "done",
+            "pending_cluster",
+            "clustering",
+            "pending_visualize",
+            "visualizing",
+            "rollback"
+          ]
+        },
+        "scheduleType": {
+          "type": "string",
+          "description": "frequency of aggregator execuation",
+          "enum": [
+            "weekly",
+            "daily",
+            "once"
+          ]
+        },
+        "scheduledFor": {
+          "type": "string",
+          "format": "date-time",
+          "example": "24-01-2020:13:40:20",
+          "description": "the aggregator executes on this scheduled date"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "example": "20-01-2020:13:40:20",
+          "description": "the aggregator creation date and time in UTC"
+        },
+        "updated": {
+          "type": "string",
+          "format": "date-time",
+          "example": "21-01-2020:14:40:20",
+          "description": "the aggregator updation date and time in UTC"
+        }
+      }
+    },
+    "AggregatorType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        },
+        "type": {
+          "type": "string",
+          "description": "aggregator types",
+          "enum": [
+            "document",
+            "website",
+            "google",
+            "facebook",
+            "instagram",
+            "reddit",
+            "twitter",
+            "youtube"
+          ]
+        },
+        "aggregatorId": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        },
+        "isEnable": {
+          "type": "boolean",
+          "example": true,
+          "default": false
+        }
+      }
+    },
+    "AggregatorHistory": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        },
+        "aggregatorId": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        },
+        "status": {
+          "type": "string",
+          "example": "status"
+        },
+        "comment": {
+          "type": "string",
+          "example": "user comments on history"
+        },
+        "totalResults": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "example": "20-01-2020:13:40:20",
+          "description": "the aggregator creation date and time in UTC"
+        },
+        "executionStarted": {
+          "type": "string",
+          "format": "date-time",
+          "example": "24-01-2020:13:40:20",
+          "description": "the aggregator execution starts date and time"
+        },
+        "executionEnded": {
+          "type": "string",
+          "format": "date-time",
+          "example": "21-01-2020:14:40:20",
+          "description": "the aggregator execution ends date and time in UTC"
+        }
+      }
+    },
+    "AggregatorSearchResult": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        },
+        "aggregatorId": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        },
+        "aggregatorHistoryId": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        },
+        "source": {
+          "type": "string",
+          "example": "Reddit"
+        },
+        "sourceId": {
+          "type": "string",
+          "example": "cryptocurrency"
+        },
+        "sourceName": {
+          "type": "string",
+          "example": "bok72"
+        },
+        "sourceTag": {
+          "type": "string",
+          "example": "tag"
+        },
+        "text": {
+          "type": "string",
+          "example": "Also do you know any good wireless options?"
+        },
+        "link": {
+          "type": "string",
+          "example": "https://www.reddit.com/r/HeadphoneAdvice/comments/f690id/what_are_the_best_wireless_headphones_at_the_225/"
+        },
+        "sentimentScore": {
+          "type": "integer",
+          "format": "int64",
+          "example": -6
+        },
+        "flagged": {
+          "type": "boolean",
+          "example": true,
+          "default": false
+        },
+        "conversed": {
+          "type": "boolean",
+          "example": true,
+          "default": false
+        },
+        "commentCount": {
+          "type": "integer",
+          "format": "int64",
+          "example": 45
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "example": "20-01-2020:13:40:20",
+          "description": "date and time if found in metadata of search result in UTC"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "example": "20-01-2020:13:40:20",
+          "description": "the search result date and time in UTC"
+        }
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
